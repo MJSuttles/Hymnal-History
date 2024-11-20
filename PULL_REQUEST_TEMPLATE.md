@@ -1,25 +1,30 @@
-Description
+**Description
+**
 
 
 
-Related Issue
+**Related Issue
+**
+
+
+**Motivation and Context
+**
 
 
 
-Motivation and Context
+**How Can This Be Tested?
+**
 
 
 
-How Can This Be Tested?
+**Screenshots (if appropriate):
+**
 
 
 
-Screenshots (if appropriate):
+**Types of changes
+**
 
-
-
-Types of changes
-
- Bug fix (non-breaking change which fixes an issue)
+[ ] Bug fix (non-breaking change which fixes an issue)
 [ ] New feature (non-breaking change which adds functionality)
- Breaking change (fix or feature that would cause existing functionality to change)
+[ ] Breaking change (fix or feature that would cause existing functionality to change)
