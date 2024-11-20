@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-app-router-with-firebase-auth",
+  "name": "Hymnal History",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,9 @@
     "prepare": "husky",
     "pre-commit": "next lint"
   },
+    "author": {
+      "name": "Brian Suttles"
+    },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "prettier --write",
