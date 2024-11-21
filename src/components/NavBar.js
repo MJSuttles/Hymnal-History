@@ -6,14 +6,14 @@ import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
         <Link passHref href="/">
           <Navbar.Brand>
-            <img src="/../images/hymnal-hero.png" alt="Hymnal Hero Logo" width={150} height={80} style={{ marginLeft: '10px' }} />
+            <img src="/../images/hymnal-hero-icon250.png" alt="Hymnal Hero Icon" width={60} height={50} style={{ marginLeft: '10px' }} />
+            <img src="/../images/hymnal-hero-name-only2.png" alt="Hymnal Hero Name" width={100} height={38.44} style={{ marginLeft: '20px' }} />
           </Navbar.Brand>
         </Link>
-        Hymnal Hero
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
