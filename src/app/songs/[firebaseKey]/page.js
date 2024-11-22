@@ -2,16 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getSingleSong } from '../../../api/songData';
+import { getSingleSongWithTopic } from '../../../api/songData';
 
 export default function ViewSong({ params }) {
   const [song, setSong] = useState(null);
+  console.log(song);
 
   const { firebaseKey } = params;
 
   useEffect(() => {
     console.log('Firebase Key:', firebaseKey);
-    getSingleSong(firebaseKey).then(setSong);
+    getSingleSongWithTopic(firebaseKey).then(setSong);
   }, [firebaseKey]);
 
   // return (
@@ -33,7 +34,7 @@ export default function ViewSong({ params }) {
           <h2>{song.title}</h2>
           <h2>{song.hymnal}</h2>
           <h2>{song.pageNumber}</h2>
-          <h2>{song.topicId}</h2>
+          <h2>{song.topic.topicName}</h2>
         </div>
       ) : (
         <p>Loading...</p>
