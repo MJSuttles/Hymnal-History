@@ -1,29 +1,33 @@
 'use client';
 
- // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
-
-import { Button } from 'react-bootstrap';
-import { signOut } from '@/utils/auth'; // anything in the src dir, you can use the @ instead of relative paths
-import { useAuth } from '@/utils/context/authContext';
+import { useState, useEffect } from 'react';
+import SongCard from '../components/SongCard';
+import { getSongsAndTopics } from '../api/songData';
 
 function Home() {
-  const { user } = useAuth();
+  const [songs, setSongs] = useState([]);
+
+  // useEffect(() => {
+  //   getSongsAndTopics().then(setSongs);
+  // }, []);
+
+  useEffect(() => {
+    getSongsAndTopics().then((data) => {
+      console.log(data);
+      setSongs(data);
+    });
+  }, []);
 
   return (
-    <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
-      style={{
-        height: '90vh',
-        padding: '30px',
-        maxWidth: '400px',
-        margin: '0 auto',
-      }}
-    >
-      <h1>Hello {user.displayName}! </h1>
-      <p>Click the button below to logout!</p>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
-      </Button>
+    <div className="text-center my-4" id="songs-page">
+      <h1 className="my-3" style={{ textAlign: 'center', marginLeft: '0' }}>
+        Home
+      </h1>
+      <div className="d-flex flex-column align-items-center ps-5">
+        {songs.map((song) => (
+          <SongCard key={song.firebaseKey} songObj={song} />
+        ))}
+      </div>
     </div>
   );
 }
