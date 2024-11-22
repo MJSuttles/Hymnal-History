@@ -10,7 +10,13 @@ const getSongsAndTopics = async () => {
       headers: { 'Content-Type': 'application/json' },
     });
     const songsData = await songsResponse.json();
-    const songs = songsData ? Object.values(songsData) : [];
+
+    const songs = songsData
+      ? Object.entries(songsData).map(([key, value]) => ({
+          ...value,
+          firebaseKey: key, // Add firebaseKey to each song
+        }))
+      : [];
 
     // Fetch topics
     const topicsResponse = await fetch(`${endpoint}/topics.json`, {
@@ -21,7 +27,13 @@ const getSongsAndTopics = async () => {
     });
 
     const topicsData = await topicsResponse.json();
-    const topics = topicsData ? Object.values(topicsData) : [];
+    // const topics = topicsData ? Object.values(topicsData) : [];
+    const topics = topicsData
+      ? Object.entries(topicsData).map(([key, value]) => ({
+          ...value,
+          firebaseKey: key, // Add firebaseKey to each topic
+        }))
+      : [];
 
     // Create a lookup map for topics by firebaseKey
     const topicMap = topics.reduce((map, topic) => {
@@ -43,7 +55,7 @@ const getSongsAndTopics = async () => {
   }
 };
 
-const getSingleSong = (firebaseKey) =>
+const getSingleSongWithTopic = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${firebaseKey}.json`, {
       method: 'GET',
@@ -52,8 +64,29 @@ const getSingleSong = (firebaseKey) =>
       },
     })
       .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch(reject);
+      .then((songData) => {
+        if (!songData.topicId) {
+          // Resolve immediately if no topicId
+          resolve({ song: songData, topic: null });
+        } else {
+          // Fetch the topic using topicId
+          fetch(`${endpoint}/topics/${songData.topicId}.json`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((response) => response.json())
+            .then((topicData) => {
+              // Merge the topic data into the song object
+              // eslint-disable-next-line no-param-reassign
+              songData.topic = topicData;
+              resolve(songData);
+            })
+            .catch(reject); // Catch errors in the second fetch
+        }
+      })
+      .catch(reject); // Catch errors in the first fetch
   });
 
-export { getSongsAndTopics, getSingleSong };
+export { getSongsAndTopics, getSingleSongWithTopic };
