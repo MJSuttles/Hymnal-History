@@ -8,15 +8,16 @@ import { getSongsAndTopics } from '../api/songData';
 function Home() {
   const [songs, setSongs] = useState([]);
 
+  const refreshSongsAndTopics = () => {
+    getSongsAndTopics().then(setSongs);
+  };
+
   // useEffect(() => {
   //   getSongsAndTopics().then(setSongs);
   // }, []);
 
   useEffect(() => {
-    getSongsAndTopics().then((data) => {
-      console.log(data);
-      setSongs(data);
-    });
+    refreshSongsAndTopics();
   }, []);
 
   return (
@@ -32,7 +33,7 @@ function Home() {
 
       <div className="d-flex flex-column align-items-center ps-5">
         {songs.map((song) => (
-          <SongCard key={song.firebaseKey} songObj={song} />
+          <SongCard key={song.firebaseKey} songObj={song} onUpdate={refreshSongsAndTopics} />
         ))}
       </div>
     </div>

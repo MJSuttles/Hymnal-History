@@ -4,8 +4,18 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { deleteSong } from '../api/songData';
 
-export default function SongCard({ songObj }) {
+export default function SongCard({ songObj, onUpdate }) {
+  const deleteSongFromView = () => {
+    if (window.confirm(`Delete ${songObj.title}?`)) {
+      console.warn('Delete event triggered!');
+      deleteSong(songObj.firebaseKey).then(() => {
+        onUpdate();
+      });
+    }
+  };
+
   return (
     <div className="row align-items-center border my-3 d-flex container" style={{ width: '70%', height: '7rem' }}>
       <div className="col">
@@ -33,11 +43,10 @@ export default function SongCard({ songObj }) {
             {/* <Dropdown.Item>
               <Link href={`/songs/edit/${songObj.firebaseKey}`} passHref>
                 Edit Song
+                ENTER EDIT DETAILS
               </Link>
             </Dropdown.Item> */}
-            {/* <Dropdown.Item>
-              ENTER DELETE DETAILS
-            </Dropdown.Item> */}
+            <Dropdown.Item onClick={deleteSongFromView}>Delete</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>
@@ -56,4 +65,5 @@ SongCard.propTypes = {
       topicName: PropTypes.string,
     }),
   }).isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
