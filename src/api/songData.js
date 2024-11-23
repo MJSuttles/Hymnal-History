@@ -89,4 +89,21 @@ const getSingleSongWithTopic = (firebaseKey) =>
       .catch(reject); // Catch errors in the first fetch
   });
 
-export { getSongsAndTopics, getSingleSongWithTopic };
+const deleteSong = (firebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/songs/${firebaseKey}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete song: ${response.status}`);
+        }
+        resolve(firebaseKey);
+      })
+      .catch(reject);
+  });
+
+export { getSongsAndTopics, getSingleSongWithTopic, deleteSong };
