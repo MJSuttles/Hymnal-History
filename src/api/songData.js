@@ -2,7 +2,8 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
-const getSongsAndTopics = async () => {
+// GET SONGS AND TOPICS
+const getSongsAndTopics = async (uid) => {
   try {
     // Fetch songs
     const songsResponse = await fetch(`${endpoint}/songs.json`, {
@@ -12,10 +13,12 @@ const getSongsAndTopics = async () => {
     const songsData = await songsResponse.json();
 
     const songs = songsData
-      ? Object.entries(songsData).map(([key, value]) => ({
-          ...value,
-          firebaseKey: key, // Add firebaseKey to each song
-        }))
+      ? Object.entries(songsData)
+          .map(([key, value]) => ({
+            ...value,
+            firebaseKey: key, // Add firebaseKey to each song
+          }))
+          .filter((song) => song.uid === uid)
       : [];
 
     // Fetch topics
@@ -27,7 +30,7 @@ const getSongsAndTopics = async () => {
     });
 
     const topicsData = await topicsResponse.json();
-    // const topics = topicsData ? Object.values(topicsData) : [];
+
     const topics = topicsData
       ? Object.entries(topicsData).map(([key, value]) => ({
           ...value,
@@ -55,6 +58,7 @@ const getSongsAndTopics = async () => {
   }
 };
 
+// GET SINGLE SONG WITH TOPIC
 const getSingleSongWithTopic = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${firebaseKey}.json`, {
@@ -89,6 +93,7 @@ const getSingleSongWithTopic = (firebaseKey) =>
       .catch(reject); // Catch errors in the first fetch
   });
 
+// DELETE SONG
 const deleteSong = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${firebaseKey}.json`, {
@@ -106,4 +111,19 @@ const deleteSong = (firebaseKey) =>
       .catch(reject);
   });
 
-export { getSongsAndTopics, getSingleSongWithTopic, deleteSong };
+// ADD SONG
+const addSong = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/songs.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, addSong };
