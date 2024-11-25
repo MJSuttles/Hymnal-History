@@ -2,6 +2,7 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
+// GET SONGS AND TOPICS
 const getSongsAndTopics = async () => {
   try {
     // Fetch songs
@@ -55,6 +56,7 @@ const getSongsAndTopics = async () => {
   }
 };
 
+// GET SINGLE SONG WITH TOPIC
 const getSingleSongWithTopic = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${firebaseKey}.json`, {
@@ -89,6 +91,7 @@ const getSingleSongWithTopic = (firebaseKey) =>
       .catch(reject); // Catch errors in the first fetch
   });
 
+// DELETE SONG
 const deleteSong = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${firebaseKey}.json`, {
@@ -106,4 +109,19 @@ const deleteSong = (firebaseKey) =>
       .catch(reject);
   });
 
-export { getSongsAndTopics, getSingleSongWithTopic, deleteSong };
+// ADD SONG
+const addSong = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/songs.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, addSong };
