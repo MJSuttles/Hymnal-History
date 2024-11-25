@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/utils/context/authContext';
 import SongCard from '../components/SongCard';
 import { getSongsAndTopics } from '../api/songData';
 
 function Home() {
   const [songs, setSongs] = useState([]);
+  const { user } = useAuth();
 
   const refreshSongsAndTopics = () => {
-    getSongsAndTopics().then(setSongs);
+    getSongsAndTopics(user.uid).then(setSongs);
   };
 
   // useEffect(() => {
@@ -18,7 +20,7 @@ function Home() {
 
   useEffect(() => {
     refreshSongsAndTopics();
-  }, []);
+  }, [user]);
 
   return (
     <div className="container text-center my-4" id="songs-page">

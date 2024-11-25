@@ -3,7 +3,7 @@ import { clientCredentials } from '../utils/client';
 const endpoint = clientCredentials.databaseURL;
 
 // GET SONGS AND TOPICS
-const getSongsAndTopics = async () => {
+const getSongsAndTopics = async (uid) => {
   try {
     // Fetch songs
     const songsResponse = await fetch(`${endpoint}/songs.json`, {
@@ -13,10 +13,12 @@ const getSongsAndTopics = async () => {
     const songsData = await songsResponse.json();
 
     const songs = songsData
-      ? Object.entries(songsData).map(([key, value]) => ({
-          ...value,
-          firebaseKey: key, // Add firebaseKey to each song
-        }))
+      ? Object.entries(songsData)
+          .map(([key, value]) => ({
+            ...value,
+            firebaseKey: key, // Add firebaseKey to each song
+          }))
+          .filter((song) => song.uid === uid)
       : [];
 
     // Fetch topics
@@ -28,7 +30,7 @@ const getSongsAndTopics = async () => {
     });
 
     const topicsData = await topicsResponse.json();
-    // const topics = topicsData ? Object.values(topicsData) : [];
+
     const topics = topicsData
       ? Object.entries(topicsData).map(([key, value]) => ({
           ...value,
