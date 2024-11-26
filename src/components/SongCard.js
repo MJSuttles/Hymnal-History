@@ -40,12 +40,11 @@ export default function SongCard({ songObj, onUpdate }) {
                 Go to Song
               </Link>
             </Dropdown.Item>
-            {/* <Dropdown.Item>
+            <Dropdown.Item>
               <Link href={`/songs/edit/${songObj.firebaseKey}`} passHref>
                 Edit Song
-                ENTER EDIT DETAILS
               </Link>
-            </Dropdown.Item> */}
+            </Dropdown.Item>
             <Dropdown.Item onClick={deleteSongFromView}>Delete</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

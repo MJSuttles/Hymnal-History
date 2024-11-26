@@ -12,10 +12,6 @@ function Home() {
     getSongsAndTopics().then(setSongs);
   };
 
-  // useEffect(() => {
-  //   getSongsAndTopics().then(setSongs);
-  // }, []);
-
   useEffect(() => {
     refreshSongsAndTopics();
   }, []);
