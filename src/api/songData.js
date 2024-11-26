@@ -2,7 +2,6 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
-// GET SONGS AND TOPICS
 const getSongsAndTopics = async (uid) => {
   try {
     // Fetch songs
@@ -18,7 +17,7 @@ const getSongsAndTopics = async (uid) => {
             ...value,
             firebaseKey: key, // Add firebaseKey to each song
           }))
-          .filter((song) => song.uid === uid)
+          .filter((song) => song.uid === uid) // Filter invalid songs
       : [];
 
     // Fetch topics
@@ -28,14 +27,15 @@ const getSongsAndTopics = async (uid) => {
         'Content-Type': 'application/json',
       },
     });
-
     const topicsData = await topicsResponse.json();
 
     const topics = topicsData
-      ? Object.entries(topicsData).map(([key, value]) => ({
-          ...value,
-          firebaseKey: key, // Add firebaseKey to each topic
-        }))
+      ? Object.entries(topicsData)
+          .map(([key, value]) => ({
+            ...value,
+            firebaseKey: key, // Add firebaseKey to each topic
+          }))
+          .filter((topic) => topic) // Filter invalid topics
       : [];
 
     // Create a lookup map for topics by firebaseKey
@@ -48,7 +48,7 @@ const getSongsAndTopics = async (uid) => {
     // Combine songs with their corresponding topic information
     const combinedData = songs.map((song) => ({
       ...song,
-      topic: topicMap[song.topicId] || null, // Add topic info or null if not found
+      topic: song.topicId ? topicMap[song.topicId] || null : null, // Ensure topicId exists
     }));
 
     return combinedData; // Returns an array of songs with topic info included
@@ -111,8 +111,8 @@ const deleteSong = (firebaseKey) =>
       .catch(reject);
   });
 
-// ADD SONG
-const addSong = (payload) =>
+// CREATE SONG
+const createSong = (payload) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs.json`, {
       method: 'POST',
@@ -126,4 +126,18 @@ const addSong = (payload) =>
       .catch(reject);
   });
 
-export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, addSong };
+const updateSong = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/songs/${payload.firebaseKey}.json`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, createSong, updateSong };

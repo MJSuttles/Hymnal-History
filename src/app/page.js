@@ -14,10 +14,6 @@ function Home() {
     getSongsAndTopics(user.uid).then(setSongs);
   };
 
-  // useEffect(() => {
-  //   getSongsAndTopics().then(setSongs);
-  // }, []);
-
   useEffect(() => {
     refreshSongsAndTopics();
   }, [user]);
