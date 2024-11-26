@@ -37,7 +37,7 @@ export default function SongForm({ obj = initialFormState }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.firebaseKey) {
-      updateSong(formInput).then(() => router.push(`songs/${obj.firebaseKey}`));
+      updateSong(formInput).then(() => router.push(`/`));
     } else {
       const payload = { ...formInput, uid: user.uid };
       createSong(payload).then(({ name }) => {
@@ -83,7 +83,7 @@ export default function SongForm({ obj = initialFormState }) {
             {/* Map over values. Remember to add a key prop. */}
             {songs.map((song) => (
               <option key={song.topicId} value={song.topicId}>
-                {song.topicId}
+                {song.topic.topicName}
               </option>
             ))}
           </Form.Select>

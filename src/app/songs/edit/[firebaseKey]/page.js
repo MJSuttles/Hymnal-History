@@ -6,12 +6,15 @@ import SongForm from '@/components/forms/SongForm';
 import { getSingleSongWithTopic } from '@/api/songData';
 
 export default function EditSong({ params }) {
-  const { uid } = params;
+  // const { songId } = params.firebaseKey;
+  const { firebaseKey: songId } = params; // Rename firebaseKey to songId
+  console.log('This is the songId', songId);
+  console.log(songId);
   const [formInput, setFormInput] = useState({});
 
   useEffect(() => {
-    getSingleSongWithTopic(uid).then(setFormInput);
-  }, [uid]);
+    getSingleSongWithTopic(songId).then(setFormInput);
+  }, [songId]);
 
   return (
     <div>

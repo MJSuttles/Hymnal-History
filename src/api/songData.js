@@ -17,7 +17,7 @@ const getSongsAndTopics = async (uid) => {
             ...value,
             firebaseKey: key, // Add firebaseKey to each song
           }))
-          .filter((song) => song.uid === uid) // Filter invalid songs
+          .filter((song) => song && song.uid === uid && typeof song.topicId !== 'undefined')
       : [];
 
     // Fetch topics
