@@ -2,7 +2,7 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
-const getSongsAndTopics = async () => {
+const getSongsAndTopics = async (uid) => {
   try {
     // Fetch songs
     const songsResponse = await fetch(`${endpoint}/songs.json`, {
@@ -17,7 +17,7 @@ const getSongsAndTopics = async () => {
             ...value,
             firebaseKey: key, // Add firebaseKey to each song
           }))
-          .filter((song) => song && typeof song.topicId !== 'undefined') // Filter invalid songs
+          .filter((song) => song.uid === uid) // Filter invalid songs
       : [];
 
     // Fetch topics

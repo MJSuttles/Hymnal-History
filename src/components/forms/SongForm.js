@@ -100,7 +100,7 @@ SongForm.propTypes = {
   obj: PropTypes.shape({
     title: PropTypes.string,
     hymnal: PropTypes.string,
-    pageNumber: PropTypes.string,
+    pageNumber: PropTypes.number,
     topicId: PropTypes.string,
   }).isRequired,
 };
