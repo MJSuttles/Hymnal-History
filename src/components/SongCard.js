@@ -45,7 +45,7 @@ export default function SongCard({ songObj, onUpdate }) {
                 Edit Song
               </Link>
             </Dropdown.Item>
-            <Dropdown.Item onClick={deleteSongFromView}>Delete</Dropdown.Item>
+            <Dropdown.Item onClick={deleteSongFromView}>Delete Song</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>

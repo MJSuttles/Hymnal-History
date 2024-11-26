@@ -7,27 +7,26 @@ import { getSingleSongWithTopic, deleteSong } from '../../../api/songData';
 
 export default function ViewSong({ params }) {
   const [song, setSong] = useState(null);
-  console.log(song);
   const router = useRouter();
-
   const { firebaseKey } = params;
 
-  const refreshSongs = () => {
-    getSingleSongWithTopic(firebaseKey).then(setSong);
+  // const refreshSongs = () => {
+  //   getSingleSongWithTopic(firebaseKey).then(setSong);
+  // };
+
+  const refreshSongs = async () => {
+    try {
+      const fetchedSong = await getSingleSongWithTopic(firebaseKey);
+      console.log(fetchedSong); // Check the API response here
+      setSong(fetchedSong);
+    } catch (error) {
+      console.error('Error fetching the song:', error);
+    }
   };
 
   useEffect(() => {
     refreshSongs();
   }, [firebaseKey]);
-
-  // const handleDelete = () => {
-  //   if (window.confirm(`Delete song ${firebaseKey}?`)) {
-  //     deleteSong(firebaseKey).then(() => {
-  //       console.log(`Song ${firebaseKey} was deleted.`);
-  //       refreshSongs();
-  //     });
-  //   }
-  // };
 
   const handleDelete = () => {
     if (!song) return;
@@ -40,15 +39,67 @@ export default function ViewSong({ params }) {
     }
   };
 
+  // return (
+  //   <div className="container text-center my-3">
+  //     <h1>View Song</h1>
+  //     {song ? (
+  //       <div className="card bg-dark text-white mx-auto my-4" style={{ maxWidth: '500px' }}>
+  //         <div className="card-body">
+  //           <h5 className="card-title text-center">Song Details</h5>
+  //           <div className="mb-3">
+  //             <label className="form-label">
+  //               <strong>Title:</strong>
+  //             </label>
+  //             <p className="form-control-plaintext">{song.title}</p>
+  //           </div>
+  //           <div className="mb-3">
+  //             <label className="form-label">
+  //               <strong>Hymnal:</strong>
+  //             </label>
+  //             <p className="form-control-plaintext">{song.hymnal}</p>
+  //           </div>
+  //           <div className="mb-3">
+  //             <label className="form-label">
+  //               <strong>Page Number:</strong>
+  //             </label>
+  //             <p className="form-control-plaintext">{song.pageNumber}</p>
+  //           </div>
+  //           <div className="mb-3">
+  //             <label className="form-label">
+  //               <strong>Topic:</strong>
+  //             </label>
+  //             <p className="form-control-plaintext">{song.topic?.topicName}</p>
+  //           </div>
+  //           <div className="text-center">
+  //             <button onClick={() => handleDelete(song.firebaseKey)} className="btn btn-danger">
+  //               Delete Song
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     ) : (
+  //       <p>Song has been deleted or is unavailable.</p>
+  //     )}
+  //   </div>
+  // );
+
   return (
     <div className="text-center my-3">
       <h1>Song Details</h1>
       {song ? (
         <div className="my-4 song-info">
-          <h2>{song.title}</h2>
-          <h2>{song.hymnal}</h2>
-          <h2>{song.pageNumber}</h2>
-          <h2>{song.topic?.topicName}</h2>
+          <p>
+            Title: <strong>{song.title}</strong>
+          </p>
+          <p>
+            Hymnal: <strong>{song.hymnal}</strong>
+          </p>
+          <p>
+            Page Number: <strong>{song.pageNumber}</strong>
+          </p>
+          <p>
+            Topic: <strong>{song.topic?.topicName}</strong>
+          </p>
         </div>
       ) : (
         <p>Song has been deleted or is unavailable.</p>
@@ -63,12 +114,8 @@ export default function ViewSong({ params }) {
   );
 }
 
-// ViewSong.propTypes = {
-//   params: PropTypes.objectOf({}).isRequired,
-// };
-
 ViewSong.propTypes = {
   params: PropTypes.shape({
-    firebaseKey: PropTypes.string.isRequired, // Update this
+    firebaseKey: PropTypes.string.isRequired,
   }).isRequired,
 };
