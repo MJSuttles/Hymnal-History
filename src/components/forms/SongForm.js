@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/utils/context/authContext';
-import { createSong, updateSong, getSongsAndTopics } from '@/api/songData';
+import { createSong, updateSong, getTopics } from '@/api/songData';
 
 const initialFormState = {
   title: '',
@@ -19,10 +19,10 @@ export default function SongForm({ obj = initialFormState }) {
   const router = useRouter();
 
   const [formInput, setFormInput] = useState(obj);
-  const [songs, setSongs] = useState([]);
+  const [topics, setTopics] = useState([]);
 
   useEffect(() => {
-    getSongsAndTopics().then(setSongs);
+    getTopics().then(setTopics);
     if (obj.firebaseKey) setFormInput(obj);
   }, [obj, user]);
 
@@ -81,9 +81,9 @@ export default function SongForm({ obj = initialFormState }) {
           <Form.Select onChange={handleChange} aria-label="Topic" name="topicId" className="mb-3" value={formInput.topicId || ''} required>
             <option value="">Select ...</option>
             {/* Map over values. Remember to add a key prop. */}
-            {songs.map((song) => (
-              <option key={song.topicId} value={song.topicId}>
-                {song.topic.topicName}
+            {topics.map((topic) => (
+              <option key={topic.firebaseKey} value={topic.firebaseKey}>
+                {topic.topicName}
               </option>
             ))}
           </Form.Select>
