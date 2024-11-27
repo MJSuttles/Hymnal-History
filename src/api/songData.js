@@ -140,4 +140,25 @@ const updateSong = (payload) =>
       .catch(reject);
   });
 
-export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, createSong, updateSong };
+// const getTopics = () =>
+//   new Promise((resolve, reject) => {
+//     fetch(`${endpoint}/topics.json`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     })
+//       .then((response) => response.json())
+//       .then((data) => resolve(data))
+//       .catch(reject);
+//   });
+
+const getTopics = async () => {
+  const response = await fetch(`${endpoint}/topics.json`);
+  const data = await response.json();
+
+  // Transform Firebase's key-value pair structure into an array
+  return data ? Object.entries(data).map(([key, value]) => ({ ...value, firebaseKey: key })) : [];
+};
+
+export { getSongsAndTopics, getSingleSongWithTopic, deleteSong, createSong, updateSong, getTopics };
