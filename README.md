@@ -1,61 +1,27 @@
-# NextJS with Firebase Auth App Router Template
+Name of the Project: Hymnal-History
 
-[See Live Demo of this Template](https://drt-next-js-template-app-router.netlify.app/)
+Overview of the project: To start, the new name of the app is "Hymnal Hero"; I'd already named the repo "Hymnal History" when I created it, and I didn't want to change the name.
 
-## Topics
-- [Get Started](#get-started)
-- [Starting the Project](#starting-the-project)
-- [Deploying on Netlify](#deploying-on-netlify)
-___
-## Getting Started
-### Use Template
-#### 1. To get started, click the GREEN "Use this Template" button at the top of the repo
-<img width="915" alt="Screen Shot 2022-07-06 at 12 54 01 PM" src="https://user-images.githubusercontent.com/29741570/177612998-4aac9237-5a1e-4f13-8ae0-468587521564.png">
+The MVP version of the app is a repository where song leaders can post data of hymns they lead during church services (title, hymnal, and page number, and topics). Once logged-in, they are able to add these songs through an online form. Once added, the songs will appear on a master list. These songs can then be edited and/or deleted.
 
-#### 2. Make sure YOUR github account is selected in the dropdown and name your project
-<img width="763" alt="Screen Shot 2022-07-06 at 12 54 48 PM" src="https://user-images.githubusercontent.com/29741570/177613126-dd38f678-7553-4f27-8a4a-75680f14d71e.png">
+Link to MVP ERD: https://dbdiagram.io/d/Hymnal-Hero-MVP-673a80e3e9daa85acac17eea
 
-#### 3. Clone your new repo to your local machine
-#### 4. Go to the **NEXT** section
+Link to your wireframes/prototype: https://drive.google.com/drive/u/1/folders/1lotuyY2GdhzOwTwg-ecSOZ_MTvlXnp7e
 
-## Starting the Project
-1. Create a Firebase project and set up authentication. Use [these videos](https://vimeo.com/showcase/codetracker-firebase) as a refresher if needed.
-1. Create a `.env` file at the root of the project
-1. Copy/Paste the contents of the `.env.sample` file to your newly created `.env` file.
-1. Copy over all of your Firebase values into the `.env` file.
-1. Open the `package.json` file and change the `name` property to the name of your application, and `author` to  your name.
-1. From your command line, be in the root directory and run `npm install` OR `npm i` for short.
-1. Next, run `npm run prepare`. This command sets up husky to track eslint errors on commit that will make your deploy fail on Netlify.
-1. Run `npx eslint . --ext .js,.jsx`
-1. To start your application, run `npm run dev`. THIS IS THE COMMAND YOU WILL USE TO RUN YOUR DEVELOPMENT SERVER FROM NOW ON.
-1. Open [http://localhost:3000](http://localhost:3000) with your browser.
+Link/screenshot of data flowchart: N/A
 
-### If you see this, you are set to go!
-<img width="450" alt="Screen Shot 2022-07-06 at 1 07 27 PM" src="https://github.com/user-attachments/assets/deae25f0-01d5-44b4-be60-7297b0f6f0ef">
+Link to the deployed project (will learn later): https://rolltidedad-hymnal-history.netlify.app/
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Link to your project board (yes...even though it is a part of the repo): https://github.com/users/MJSuttles/projects/6/views/1
 
-**NOTES:** 
-- If you see the following error, you did not follow all the setup steps correctly and failed to add your Firebase creds. Go back and do that NOW.
+Description of the user and the problem you are solving for them:
 
-<img width="1043" alt="Screen Shot 2022-07-06 at 11 18 45 AM" src="https://user-images.githubusercontent.com/29741570/177612501-c2628f18-4bbd-4de9-aae6-27ffba1172d6.png">
+As a song leader, I need a way to easily find a list of songs that I lead and match them to their primary topic. This will make picking-out songs for each service a much easier task.
 
-### Deploying on Netlify
-Netlify will automatically detect your project and prepopulate the settings, but should something go wrong and it does not, here are the commands:
+Screenshots of your project: ![alt text](<Screenshot 2024-11-26 at 7.47.38 PM.png>)
+![alt text](<Screenshot 2024-11-26 at 7.48.26 PM.png>) ![alt text](<Screenshot 2024-11-26 at 7.49.00 PM.png>) ![alt text](<Screenshot 2024-11-26 at 7.49.40 PM.png>) ![alt text](<Screenshot 2024-11-26 at 7.50.20 PM.png>) ![alt text](<Screenshot 2024-11-26 at 7.50.57 PM.png>)
 
-- Build Command: `npm run build`
-- Publish directory: `.next`
+List of contributors and links to their GH profiles: Brian Suttles (https://github.com/MJSuttles)
 
-#### Additional Steps to Take on Netlify
-- Add Environmental Variables
-    - Any Enviromental variables you are using in your `.env` file should be added to Netlify. 
-        - Go to Site settings > Build & deploy > Environment > Environment variables and the keys and values there if you did not add them when you were deploying your site
-
-- Update Firebase URL Settings
-    - In Firebase under Authentication select sign in methods, scroll to Authorized domains. Add your Netlify URL.
-        
-## Learn More about Next.js
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Link to Loom video walkthrough of your app (no more than 1 minute long! Make it great):
+https://www.loom.com/share/2d0e3e44381a4e2bbd7817127f0af687
