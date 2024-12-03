@@ -14,7 +14,7 @@ function Signin() {
         margin: '0 auto',
       }}
     >
-      <Image src="/images/hymnal-hero-icon250.png" alt="Hymnal Hero Logo" width={250} height={200} style={{ alignSelf: 'center' }} />
+      <Image src="/images/hymnal-hero-icon250.png" alt="Hymnal Hero Logo" width={500} height={200} style={{ alignSelf: 'center' }} />
       <Button type="button" size="lg" className="copy-btn" onClick={signIn}>
         Sign In
       </Button>
