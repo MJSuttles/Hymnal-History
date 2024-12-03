@@ -10,7 +10,7 @@ export default function NavBar() {
       <Container>
         <Link passHref href="/">
           <Navbar.Brand>
-            <img src="/../images/hymnal-hero-icon250.png" alt="Hymnal Hero Icon" width={60} height={50} style={{ marginLeft: '10px' }} />
+            <img src="/../images/hymnal-hero-icon250.png" alt="Hymnal Hero Icongit comm" width={60} height={50} style={{ marginLeft: '10px' }} />
             <img src="/../images/hymnal-hero-name-only2.png" alt="Hymnal Hero Name" width={100} height={38.44} style={{ marginLeft: '20px' }} />
           </Navbar.Brand>
         </Link>
@@ -23,6 +23,12 @@ export default function NavBar() {
             </Link>
             <Link className="nav-link" href="/songs/new">
               Add a Song
+            </Link>
+            <Link className="nav-link" href="/lists">
+              Song Lists
+            </Link>
+            <Link className="nav-link" href="/lists/new">
+              Add a Song List
             </Link>
           </Nav>
 

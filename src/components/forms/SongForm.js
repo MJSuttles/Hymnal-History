@@ -89,7 +89,7 @@ export default function SongForm({ obj = initialFormState }) {
           </Form.Select>
         </Form.Group>
         <button className="btn btn-primary" type="submit">
-          {obj.firebaseKey ? 'Update' : 'Create'} playlist
+          {obj.firebaseKey ? 'Update' : 'Create'} Song
         </button>
       </Form>
     </div>
