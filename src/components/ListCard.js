@@ -15,7 +15,7 @@ export default function ListCard({ listObj }) {
   };
 
   return (
-    <div className="card border my-3" style={{ width: '100%', height: '7rem' }}>
+    <div className="card border my-3" style={{ width: '100%', height: 'auto' }}>
       <div className="card-body d-flex align-items-center">
         <div className="col">
           <p>{listObj.date}</p>
