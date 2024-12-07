@@ -4,6 +4,16 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 export default function ListCard({ listObj }) {
+  // Method for mapping song details to be displayed as array on each Bootstrap card
+  const listOfSongs = () => {
+    const songItems = [];
+    /* eslint-disable no-restricted-syntax */
+    for (const song of listObj.songs) {
+      songItems.push(<li key={song.id}>{song.title}</li>);
+    }
+    return <ul>{songItems}</ul>;
+  };
+
   return (
     <div className="card border my-3" style={{ width: '100%', height: '7rem' }}>
       <div className="card-body d-flex align-items-center">
@@ -14,7 +24,8 @@ export default function ListCard({ listObj }) {
           <p>{listObj.congregation}</p>
         </div>
         <div className="col">
-          <p>{listObj.songIds ? listObj.songIds.join(', ') : 'No songs'}</p>
+          {/* Call on listOfSongs method above so individual song details can be displayed on cards */}
+          {listOfSongs()}
         </div>
         <div className="col">
           <Dropdown>
@@ -46,7 +57,12 @@ ListCard.propTypes = {
   listObj: PropTypes.shape({
     date: PropTypes.string.isRequired,
     congregation: PropTypes.string.isRequired,
-    songIds: PropTypes.arrayOf(PropTypes.string),
     firebaseKey: PropTypes.string.isRequired,
+    songs: PropTypes.arrayOf(
+      PropTypes.shape({
+        firebaseKey: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
 };
