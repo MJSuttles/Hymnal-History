@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import ListCard from '@/components/ListCard';
 import { useAuth } from '@/utils/context/authContext';
-import getListsAndSongs from '../../api/listData';
+import { getListsAndSongs } from '../../api/listData';
 
 export default function Lists() {
   const [lists, setLists] = useState([]);

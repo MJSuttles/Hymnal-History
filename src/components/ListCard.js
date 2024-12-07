@@ -11,7 +11,7 @@ export default function ListCard({ listObj }) {
     for (const song of listObj.songs) {
       songItems.push(<li key={song.id}>{song.title}</li>);
     }
-    return <ul>{songItems}</ul>;
+    return <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>{songItems}</ul>;
   };
 
   return (
