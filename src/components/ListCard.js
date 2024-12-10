@@ -2,8 +2,9 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { deleteSongList } from '../api/listData';
 
-export default function ListCard({ listObj }) {
+export default function ListCard({ listObj, onUpdate }) {
   // Method for mapping song details to be displayed as array on each Bootstrap card
   const listOfSongs = () => {
     const songItems = [];
@@ -12,6 +13,15 @@ export default function ListCard({ listObj }) {
       songItems.push(<li key={song.id}>{song.title}</li>);
     }
     return <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>{songItems}</ul>;
+  };
+
+  const deleteSongListFromView = () => {
+    if (window.confirm(`Delete song list?`)) {
+      console.warn(`Delete event triggered!`);
+      deleteSongList(listObj.firebaseKey).then(() => {
+        onUpdate();
+      });
+    }
   };
 
   return (
@@ -44,7 +54,7 @@ export default function ListCard({ listObj }) {
                   Edit Song List
                 </Link>
               </Dropdown.Item>
-              <Dropdown.Item>Delete Song List</Dropdown.Item>
+              <Dropdown.Item onClick={deleteSongListFromView}>Delete Song List</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -65,4 +75,5 @@ ListCard.propTypes = {
       }),
     ).isRequired,
   }).isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };

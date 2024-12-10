@@ -125,4 +125,21 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
   }
 };
 
-export { getListsAndSongs, getSingleListWithSongs };
+const deleteSongList = (firebaseKey) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/lists/${firebaseKey}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete song list: ${response.status}`);
+        }
+        resolve(firebaseKey);
+      })
+      .catch(reject);
+  });
+
+export { getListsAndSongs, getSingleListWithSongs, deleteSongList };
