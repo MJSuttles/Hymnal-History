@@ -30,7 +30,7 @@ export default function ViewList({ params }) {
   const handleDelete = () => {
     if (!list) return;
 
-    if (window.confirm(`Delete song list?`)) {
+    if (window.confirm(`Delete song list "${list.date}"?`)) {
       deleteSongList(list.firebaseKey).then(() => {
         console.log(`Song list was deleted.`);
         router.push(`/lists`); // Redirect to the lists page

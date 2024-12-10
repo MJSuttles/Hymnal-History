@@ -16,7 +16,7 @@ export default function ListCard({ listObj, onUpdate }) {
   };
 
   const deleteSongListFromView = () => {
-    if (window.confirm(`Delete song list?`)) {
+    if (window.confirm(`Delete ${listObj.date}?`)) {
       console.warn(`Delete event triggered!`);
       deleteSongList(listObj.firebaseKey).then(() => {
         onUpdate();
