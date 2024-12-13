@@ -142,4 +142,42 @@ const deleteSongList = (firebaseKey) =>
       .catch(reject);
   });
 
-export { getListsAndSongs, getSingleListWithSongs, deleteSongList };
+// CREATE LIST
+const createList = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/lists.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+// UPDATE LIST
+const updateList = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/lists/${payload.firebaseKey}.json`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+const getSongs = async () => {
+  const response = await fetch(`${endpoint}/songs.json`);
+  const data = await response.json();
+
+  // Transform Firebase's key-value pair structure into an array
+  return data ? Object.entries(data).map(([key, value]) => ({ ...value, firebaseKey: key })) : [];
+};
+
+export { getListsAndSongs, getSingleListWithSongs, deleteSongList, createList, updateList, getSongs };
