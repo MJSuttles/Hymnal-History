@@ -16,6 +16,7 @@ function Home() {
 
   useEffect(() => {
     refreshSongsAndTopics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
