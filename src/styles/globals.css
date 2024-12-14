@@ -2,3 +2,33 @@ body {
   background: black;
   color: white;
 }
+
+.search-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 600px;  /* You can adjust the max-width as per your design */
+  margin: 20px auto;  /* Centering the search bar */
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;  /* Change the border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Optional: Adds a subtle shadow on focus */
+}
+
+.form-control::placeholder {
+  color: #999;
+  font-style: italic;
+}
