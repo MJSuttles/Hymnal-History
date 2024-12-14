@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/utils/context/authContext';
 import SongCard from '../components/SongCard';
 import { getSongsAndTopics } from '../api/songData';
+import SearchBar from '../components/SearchBar';
 
 function Home() {
   const [songs, setSongs] = useState([]);
@@ -24,6 +25,7 @@ function Home() {
       <h1 className="my-3" style={{ textAlign: 'center', marginLeft: '0' }}>
         Home
       </h1>
+      <SearchBar />
       <Link href="/songs/new" passHref>
         <button type="button" className="btn btn-primary my-3">
           Add a Song
