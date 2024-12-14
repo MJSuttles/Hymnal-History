@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ListCard from '@/components/ListCard';
 import { useAuth } from '@/utils/context/authContext';
 import { getListsAndSongs } from '../../api/listData';
+import SearchBar from '../../components/SearchBar';
 
 export default function Lists() {
   const [lists, setLists] = useState([]);
@@ -24,6 +25,7 @@ export default function Lists() {
       <h1 className="my-3" style={{ textAlign: 'center', marginLeft: '0' }}>
         Song Lists
       </h1>
+      <SearchBar />
       <Link href="/lists/new" passHref>
         <button type="button" className="btn btn-primary my-3">
           Add a Song List
