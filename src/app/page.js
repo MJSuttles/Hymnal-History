@@ -12,7 +12,11 @@ function Home() {
   const { user } = useAuth();
 
   const refreshSongsAndTopics = () => {
-    getSongsAndTopics(user.uid).then(setSongs);
+    getSongsAndTopics(user.uid).then((fetchedSongs) => {
+      // Sort the songs alphabetically by name
+      const sortedSongs = fetchedSongs.sort((a, b) => a.title.localeCompare(b.title));
+      setSongs(sortedSongs);
+    });
   };
 
   useEffect(() => {
