@@ -51,8 +51,6 @@ const getSongsAndTopics = async (uid) => {
       topic: song.topicId ? topicMap[song.topicId] || null : null, // Ensure topicId exists
     }));
 
-    console.log('Showing value of combined data');
-    console.log(combinedData);
     return combinedData; // Returns an array of songs with topic info included
   } catch (error) {
     console.error('Error fetching songs or topics:', error);
