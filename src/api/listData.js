@@ -4,65 +4,49 @@ const endpoint = clientCredentials.databaseURL;
 
 const getListsAndSongs = async (uid) => {
   try {
-    // Fetch the lists
-    const listResponse = await fetch(`${endpoint}/lists.json`, {
+    // Fetch all lists
+    const listsResponse = await fetch(`${endpoint}/lists.json`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const listData = await listResponse.json();
+    const listsData = await listsResponse.json();
 
-    // Fetch the songs
-    const songResponse = await fetch(`${endpoint}/songs.json`, {
+    // Fetch all songs
+    const songsResponse = await fetch(`${endpoint}/songs.json`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const songData = await songResponse.json();
+    const songsData = await songsResponse.json();
 
-    // Filter and map the lists by uid
-    const filteredLists = listData
-      ? Object.entries(listData)
-          .map(([key, value]) => ({
-            ...value,
-            firebaseKey: key, // Add firebaseKey to each list
+    // Filter lists belonging to the user
+    const userLists = Object.keys(listsData)
+      .filter((key) => listsData[key].uid === uid)
+      .map((key) => {
+        const list = listsData[key];
+
+        // Get the songs associated with this list
+        const songIds = list.songIds ? Object.keys(list.songIds) : [];
+        const songs = songIds
+          .map((songId) => ({
+            firebaseKey: songId,
+            ...songsData[songId],
           }))
-          .filter((list) => list && list.uid === uid) // Filter lists by uid
-      : [];
+          .filter((song) => song.firebaseKey); // Filter out undefined/null songs
 
-    // Transform list and song into a structure which will display the data correctly on Bootstrap cards on Song Lists page
-    const myLists = filteredLists.map((list) => {
-      // Extract song IDs from list.songIds
-      const songIds = list.songIds ? Object.keys(list.songIds) : [];
+        return {
+          firebaseKey: key,
+          ...list,
+          songs, // Include the songs in the list object
+        };
+      });
 
-      // Match song IDs with songData (from the songs 'GET' call above) to get song details needed for display on Bootstrap cards on Song Lists page
-      const songs = songIds
-        .map((songId) => {
-          const song = songData[songId];
-          return song
-            ? {
-                firebaseKey: songId,
-                title: song.title,
-              }
-            : null;
-        })
-        .filter((song) => song); // Remove null values for unmatched IDs (e.g., deleted songs)
-
-      return {
-        firebaseKey: list.firebaseKey,
-        date: list.date,
-        congregation: list.congregation,
-        songs,
-      };
-    });
-
-    console.log('Final structured data:', myLists);
-
-    return myLists;
+    return userLists;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching lists and songs:', error);
     return [];
   }
 };
