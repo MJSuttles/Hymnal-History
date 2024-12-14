@@ -100,8 +100,6 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
       songs,
     };
 
-    console.log('Fetched single list data:', singleList);
-
     return singleList;
   } catch (error) {
     console.error('Error fetching single list:', error);
