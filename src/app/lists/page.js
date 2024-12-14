@@ -12,7 +12,11 @@ export default function Lists() {
   const { user } = useAuth();
 
   const refreshListsAndSongs = () => {
-    getListsAndSongs(user.uid).then(setLists);
+    getListsAndSongs(user.uid).then((fetchedLists) => {
+      // Sort lists by date (oldest to newest)
+      const sortedLists = fetchedLists.sort((a, b) => new Date(a.date) - new Date(b.date));
+      setLists(sortedLists);
+    });
   };
 
   useEffect(() => {
