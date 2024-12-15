@@ -10,7 +10,7 @@ export default function ListCard({ listObj, onUpdate }) {
     const songItems = [];
     /* eslint-disable no-restricted-syntax */
     for (const song of listObj.songs) {
-      songItems.push(<li key={song.id}>{song.title}</li>);
+      songItems.push(<li key={song.firebaseKey}>{song.title}</li>);
     }
     return <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>{songItems}</ul>;
   };
@@ -49,11 +49,11 @@ export default function ListCard({ listObj, onUpdate }) {
                   Go to Song List
                 </Link>
               </Dropdown.Item>
-              <Dropdown.Item as="div">
+              {/* <Dropdown.Item as="div">
                 <Link href={`/lists/edit/${listObj.firebaseKey}`} passHref>
                   Edit Song List
                 </Link>
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item onClick={deleteSongListFromView}>Delete Song List</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -70,7 +70,7 @@ ListCard.propTypes = {
     firebaseKey: PropTypes.string.isRequired,
     songs: PropTypes.arrayOf(
       PropTypes.shape({
-        firebaseKey: PropTypes.string.isRequired,
+        firebaseKey: PropTypes.string.isRequired, // Using firebaseKey here
         title: PropTypes.string.isRequired,
       }),
     ).isRequired,
