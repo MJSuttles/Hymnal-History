@@ -3,9 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '../../utils/context/authContext';
-import { createList, updateList, getSongs } from '../../api/listData';
+import getSongs from '../../api/listData';
 
 const initialFormState = {
   date: '',
@@ -15,9 +14,8 @@ const initialFormState = {
   firebaseKey: '',
 };
 
-export default function SongListForm({ obj = initialFormState }) {
+export default function SongListForm({ obj = initialFormState, onSubmit }) {
   const { user } = useAuth();
-  const router = useRouter();
 
   const [formInput, setFormInput] = useState(obj);
   const [listSongs, setListSongs] = useState([]);
@@ -38,13 +36,24 @@ export default function SongListForm({ obj = initialFormState }) {
 
   const handleSongSelect = (e) => {
     const songId = e.target.value;
-    const selectedSong = listSongs.find((song) => song.firebaseKey === songId);
+    const selectedSong = listSongs.findIndex((song) => song.firebaseKey === songId);
 
-    if (selectedSong && !selectedSongs.find((song) => song.firebaseKey === songId)) {
-      setSelectedSongs((prevSongs) => [
-        ...prevSongs,
-        { ...selectedSong, index: prevSongs.length + 1 }, // Assign index
-      ]);
+    if (selectedSong) {
+      const existingSongIndex = selectedSongs.findIndex((song) => song.firebaseKey === songId);
+
+      if (existingSongIndex !== -1) {
+        // If the song already exists, keep its index and replace it
+        setSelectedSongs((prevSongs) => {
+          const newSongs = [...prevSongs];
+          newSongs[existingSongIndex] = { ...selectedSong, index: prevSongs(existingSongIndex).index }; // Preserve index
+          return newSongs;
+        });
+      } else {
+        setSelectedSongs((prevSongs) => [
+          ...prevSongs,
+          { ...selectedSong, index: prevSongs.length + 1 }, // Assign new index
+        ]);
+      }
     }
   };
 
@@ -61,16 +70,7 @@ export default function SongListForm({ obj = initialFormState }) {
       }, {}),
     };
 
-    if (obj.firebaseKey) {
-      updateList(payload).then(() => router.push('/lists'));
-    } else {
-      createList(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updateList(patchPayload).then(() => {
-          router.push('/lists');
-        });
-      });
-    }
+    onSubmit(payload);
   };
 
   return (
@@ -130,4 +130,5 @@ SongListForm.propTypes = {
     songIds: PropTypes.arrayOf(PropTypes.string),
     firebaseKey: PropTypes.string,
   }),
+  onSubmit: PropTypes.func.isRequired,
 };
