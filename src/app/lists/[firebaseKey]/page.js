@@ -1,16 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { getSingleListWithSongs, deleteSongList } from '../../../api/listData';
 import { useAuth } from '../../../utils/context/authContext';
-import SongListForm from '../../../components/forms/SongListForm';
 
 export default function ViewSongList({ params }) {
   const [list, setList] = useState(null);
   const router = useRouter();
-  const pathname = usePathname();
   const { firebaseKey } = params || {}; // Destructure params safely
   const { user } = useAuth();
 
@@ -25,17 +23,11 @@ export default function ViewSongList({ params }) {
   };
 
   useEffect(() => {
-    // Call refreshLists only if firebaseKey exists (i.e., not on `/lists/new`)
     if (firebaseKey) {
       refreshLists();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firebaseKey, user]);
-
-  // Handle the special case for `/lists/new` route
-  if (pathname === '/lists/new') {
-    return <SongListForm />;
-  }
 
   const handleDelete = () => {
     if (!list || !list.firebaseKey) {
