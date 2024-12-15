@@ -2,6 +2,7 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
+// GET ALL LISTS AND SONGS
 const getListsAndSongs = async (uid) => {
   try {
     // Fetch all lists
@@ -51,6 +52,7 @@ const getListsAndSongs = async (uid) => {
   }
 };
 
+// GET SINGLE LIST WITH SONGS
 const getSingleListWithSongs = async (uid, firebaseKey) => {
   try {
     // Fetch the single list
@@ -107,6 +109,7 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
   }
 };
 
+// DELETE SONG LIST
 const deleteSongList = (firebaseKey) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/lists/${firebaseKey}.json`, {
@@ -154,6 +157,7 @@ const updateList = (payload) =>
       .catch(reject);
   });
 
+// GET SONGS FOR LIST
 const getSongs = async () => {
   const response = await fetch(`${endpoint}/songs.json`);
   const data = await response.json();

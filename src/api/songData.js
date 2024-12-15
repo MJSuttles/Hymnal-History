@@ -2,6 +2,7 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
+// GET SONGS AND TOPICS
 const getSongsAndTopics = async (uid) => {
   try {
     // Fetch songs
@@ -126,6 +127,7 @@ const createSong = (payload) =>
       .catch(reject);
   });
 
+// UPDATE SONG
 const updateSong = (payload) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/songs/${payload.firebaseKey}.json`, {
@@ -140,6 +142,7 @@ const updateSong = (payload) =>
       .catch(reject);
   });
 
+// GET TOPICS
 const getTopics = async () => {
   const response = await fetch(`${endpoint}/topics.json`);
   const data = await response.json();

@@ -7,7 +7,7 @@ import { useAuth } from '@/utils/context/authContext';
 import { getListsAndSongs } from '../../api/listData';
 import SearchBar from '../../components/SearchBar';
 
-export default function Lists() {
+export default function SongLists() {
   const [lists, setLists] = useState([]);
   const { user } = useAuth();
 

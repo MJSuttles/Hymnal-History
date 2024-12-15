@@ -24,7 +24,12 @@ export default function SongListForm({ obj = initialFormState }) {
   const [selectedSongs, setSelectedSongs] = useState([]);
 
   useEffect(() => {
-    getSongs().then(setListSongs);
+    getSongs().then((songs) => {
+      // Sort songs alphabetically by title
+      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      setListSongs(sortedSongs);
+    });
+
     if (obj.firebaseKey) setFormInput(obj);
   }, [obj, user]);
 

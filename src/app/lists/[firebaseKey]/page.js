@@ -7,7 +7,7 @@ import { getSingleListWithSongs, deleteSongList } from '../../../api/listData';
 import { useAuth } from '../../../utils/context/authContext';
 import SongListForm from '../../../components/forms/SongListForm';
 
-export default function ViewList({ params }) {
+export default function ViewSongList({ params }) {
   const [list, setList] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -84,8 +84,8 @@ export default function ViewList({ params }) {
   );
 }
 
-ViewList.propTypes = {
+ViewSongList.propTypes = {
   params: PropTypes.shape({
-    firebaseKey: PropTypes.string,
+    firebaseKey: PropTypes.string.isRequired, // Make firebaseKey required
   }).isRequired,
 };

@@ -13,7 +13,6 @@ export default function ViewSong({ params }) {
   const refreshSongs = async () => {
     try {
       const fetchedSong = await getSingleSongWithTopic(firebaseKey);
-      console.log(fetchedSong); // Check the API response here
       setSong(fetchedSong);
     } catch (error) {
       console.error('Error fetching the song:', error);
