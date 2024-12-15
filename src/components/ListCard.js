@@ -10,7 +10,7 @@ export default function ListCard({ listObj, onUpdate }) {
     const songItems = [];
     /* eslint-disable no-restricted-syntax */
     for (const song of listObj.songs) {
-      songItems.push(<li key={song.id}>{song.title}</li>);
+      songItems.push(<li key={song.firebaseKey}>{song.title}</li>);
     }
     return <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>{songItems}</ul>;
   };
