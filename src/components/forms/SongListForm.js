@@ -41,22 +41,16 @@ export default function SongListForm({ obj = initialFormState, onSubmit }) {
 
   const handleSongSelect = (e) => {
     const songId = e.target.value;
-    const selectedSong = listSongs.findIndex((song) => song.firebaseKey === songId);
+    const selectedSong = listSongs.find((song) => song.firebaseKey === songId); // Find the full song object
 
     if (selectedSong) {
       const existingSongIndex = selectedSongs.findIndex((song) => song.firebaseKey === songId);
 
-      if (existingSongIndex !== -1) {
-        // If the song already exists, keep its index and replace it
-        setSelectedSongs((prevSongs) => {
-          const newSongs = [...prevSongs];
-          newSongs[existingSongIndex] = { ...selectedSong, index: prevSongs(existingSongIndex).index }; // Preserve index
-          return newSongs;
-        });
-      } else {
+      if (existingSongIndex === -1) {
+        // Add the selected song to the list
         setSelectedSongs((prevSongs) => [
           ...prevSongs,
-          { ...selectedSong, index: prevSongs.length + 1 }, // Assign new index
+          { ...selectedSong, index: prevSongs.length + 1 }, // Assign a display index
         ]);
       }
     }
@@ -75,7 +69,7 @@ export default function SongListForm({ obj = initialFormState, onSubmit }) {
       }, {}),
     };
 
-    onSubmit(payload);
+    onSubmit(payload); // Assuming the parent component is handling the submission
   };
 
   return (
@@ -110,11 +104,11 @@ export default function SongListForm({ obj = initialFormState, onSubmit }) {
 
         {/* DISPLAY SELECTED SONGS */}
         <div>
-          <h4>Selected Song</h4>
+          <h4>Selected Songs</h4>
           <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
             {selectedSongs.map((song) => (
               <li key={song.firebaseKey}>
-                {song.index}. {song.title}
+                {song.index}. {song.title} {/* Display song title with its index */}
               </li>
             ))}
           </ul>
@@ -132,7 +126,7 @@ SongListForm.propTypes = {
   obj: PropTypes.shape({
     date: PropTypes.string,
     congregation: PropTypes.string,
-    songIds: PropTypes.arrayOf(PropTypes.string),
+    songIds: PropTypes.objectOf(PropTypes.bool), // songIds is an object with songId keys
     firebaseKey: PropTypes.string,
   }),
   onSubmit: PropTypes.func.isRequired,

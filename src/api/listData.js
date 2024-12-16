@@ -21,11 +21,15 @@ const getListsAndSongs = async (uid) => {
         'Content-Type': 'application/json',
       },
     });
-    const songsData = await songsResponse.json();
+    let songsData = await songsResponse.json();
+
+    // Safeguard: If data is null, set to empty objects
+    if (!listsData) return [];
+    if (!songsData) songsData = {};
 
     // Filter lists belonging to the user
     const userLists = Object.keys(listsData)
-      .filter((key) => listsData[key].uid === uid)
+      .filter((key) => listsData[key]?.uid === uid) // Check for existence of listsData[key]
       .map((key) => {
         const list = listsData[key];
 
@@ -36,7 +40,7 @@ const getListsAndSongs = async (uid) => {
             firebaseKey: songId,
             ...songsData[songId],
           }))
-          .filter((song) => song.firebaseKey); // Filter out undefined/null songs
+          .filter((song) => song?.firebaseKey); // Ensure song exists
 
         return {
           firebaseKey: key,
@@ -55,7 +59,6 @@ const getListsAndSongs = async (uid) => {
 // GET SINGLE LIST WITH SONGS
 const getSingleListWithSongs = async (uid, firebaseKey) => {
   try {
-    // Fetch the single list
     const listResponse = await fetch(`${endpoint}/lists/${firebaseKey}.json`, {
       method: 'GET',
       headers: {
@@ -64,24 +67,21 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
     });
     const listData = await listResponse.json();
 
-    // Verify if the list exists and matches the UID
     if (!listData || listData.uid !== uid) {
       throw new Error('List not found or does not belong to the specified UID.');
     }
 
-    // Fetch all songs
     const songResponse = await fetch(`${endpoint}/songs.json`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const songData = await songResponse.json();
+    let songData = await songResponse.json();
+    if (!songData) songData = {}; // Default to empty object
 
-    // Extract song IDs from list.songIds
     const songIds = listData.songIds ? Object.keys(listData.songIds) : [];
 
-    // Match song IDs with songData to get song details needed for display
     const songs = songIds
       .map((songId) => {
         const song = songData[songId];
@@ -92,17 +92,14 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
             }
           : null;
       })
-      .filter((song) => song); // Remove null values for unmatched IDs (e.g., deleted songs)
+      .filter((song) => song);
 
-    // Structure the final data for the single list
-    const singleList = {
+    return {
       firebaseKey,
       date: listData.date,
       congregation: listData.congregation,
       songs,
     };
-
-    return singleList;
   } catch (error) {
     console.error('Error fetching single list:', error);
     return null;
