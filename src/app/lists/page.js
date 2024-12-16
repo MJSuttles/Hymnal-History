@@ -41,6 +41,7 @@ export default function SongLists() {
           <ListCard key={list.firebaseKey} listObj={list} onUpdate={refreshListsAndSongs} />
         ))}
       </div>
+      <div className="d-flex flex-column align-items-center ps-5" />
     </div>
   );
 }

@@ -109,6 +109,12 @@ const getSingleListWithSongs = async (uid, firebaseKey) => {
 // DELETE SONG LIST
 const deleteSongList = (firebaseKey) =>
   new Promise((resolve, reject) => {
+    if (!firebaseKey) {
+      console.error('Invalid firebaseKey:', firebaseKey); // Log the invalid key for debugging
+      reject(new Error('Invalid firebaseKey. Cannot delete song list.'));
+      return; // Exit early
+    }
+
     fetch(`${endpoint}/lists/${firebaseKey}.json`, {
       method: 'DELETE',
       headers: {
