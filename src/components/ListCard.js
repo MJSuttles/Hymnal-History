@@ -5,19 +5,24 @@ import PropTypes from 'prop-types';
 import { deleteSongList } from '../api/listData';
 
 export default function ListCard({ listObj, onUpdate }) {
-  // Method for mapping song details to be displayed as array on each Bootstrap card
+  // Function to map song details and display them as a list
   const listOfSongs = () => {
-    const songItems = [];
-    /* eslint-disable no-restricted-syntax */
-    for (const song of listObj.songs) {
-      songItems.push(<li key={song.firebaseKey}>{song.title}</li>);
+    if (!listObj.songs || listObj.songs.length === 0) {
+      return <p>No songs available</p>;
     }
-    return <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>{songItems}</ul>;
+
+    return (
+      <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+        {listObj.songs.map((song) => (
+          <li key={song.firebaseKey}>{song.title}</li>
+        ))}
+      </ul>
+    );
   };
 
-  const deleteSongListFromView = () => {
+  const handleDelete = () => {
     if (window.confirm(`Delete ${listObj.date}?`)) {
-      console.warn(`Delete event triggered!`);
+      console.warn('Delete event triggered!');
       deleteSongList(listObj.firebaseKey).then(() => {
         onUpdate();
       });
@@ -34,7 +39,7 @@ export default function ListCard({ listObj, onUpdate }) {
           <p>{listObj.congregation}</p>
         </div>
         <div className="col">
-          {/* Call on listOfSongs method above so individual song details can be displayed on cards */}
+          {/* Render the list of songs */}
           {listOfSongs()}
         </div>
         <div className="col">
@@ -49,12 +54,7 @@ export default function ListCard({ listObj, onUpdate }) {
                   Go to Song List
                 </Link>
               </Dropdown.Item>
-              {/* <Dropdown.Item as="div">
-                <Link href={`/lists/edit/${listObj.firebaseKey}`} passHref>
-                  Edit Song List
-                </Link>
-              </Dropdown.Item> */}
-              <Dropdown.Item onClick={deleteSongListFromView}>Delete Song List</Dropdown.Item>
+              <Dropdown.Item onClick={handleDelete}>Delete Song List</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -70,10 +70,10 @@ ListCard.propTypes = {
     firebaseKey: PropTypes.string.isRequired,
     songs: PropTypes.arrayOf(
       PropTypes.shape({
-        firebaseKey: PropTypes.string.isRequired, // Using firebaseKey here
+        firebaseKey: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
       }),
-    ).isRequired,
+    ),
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../utils/context/authContext';
-import { getSongs } from '../../api/listData';
+import { createList, getSongs, updateList } from '../../api/listData';
 
 const initialFormState = {
   date: '',
@@ -14,12 +15,13 @@ const initialFormState = {
   firebaseKey: '',
 };
 
-export default function SongListForm({ obj = initialFormState, onSubmit }) {
+export default function SongListForm({ obj = initialFormState }) {
   const { user } = useAuth();
 
   const [formInput, setFormInput] = useState(obj);
   const [listSongs, setListSongs] = useState([]);
   const [selectedSongs, setSelectedSongs] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     getSongs().then((songs) => {
@@ -56,20 +58,26 @@ export default function SongListForm({ obj = initialFormState, onSubmit }) {
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const payload = {
-      ...formInput,
-      uid: user.uid,
-      songIds: selectedSongs.reduce((acc, song) => {
-        acc[song.firebaseKey] = true; // Store song Ids as key
-        return acc;
-      }, {}),
-    };
-
-    onSubmit(payload); // Assuming the parent component is handling the submission
+    if (obj.firebaseKey) {
+      updateList(formInput).then(() => router.push(`/lists`));
+    } else {
+      const payload = {
+        ...formInput,
+        uid: user.uid,
+        songIds: selectedSongs.reduce((acc, song) => {
+          acc[song.firebaseKey] = true; // Store song Ids as key
+          return acc;
+        }, {}),
+      };
+      createList(payload).then(({ name }) => {
+        const patchPayload = { firebaseKey: name };
+        updateList(patchPayload).then(() => {
+          router.push('/lists');
+        });
+      });
+    }
   };
 
   return (
@@ -129,5 +137,4 @@ SongListForm.propTypes = {
     songIds: PropTypes.objectOf(PropTypes.bool), // songIds is an object with songId keys
     firebaseKey: PropTypes.string,
   }),
-  onSubmit: PropTypes.func.isRequired,
 };
